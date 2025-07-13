@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>[[#{category.list.headline}]]</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex flex-wrap mb-4 align-items-center justify-content-between">
+            <div class="card w-100">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h1 class="fw-medium display-6 mb-0">[[#{category.list.headline}]]</h1>
+                    <a th:href="@{/categories/add}" class="btn btn-primary">[[#{category.list.createNew}]]</a>
+                </div>
+                <div class="card-body">
+                    <div th:if="${categories.empty}" class="text-muted">[[#{category.list.empty}]]</div>
+                    <div th:if="${!categories.empty}" class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-start">[[#{category.name.label}]]</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="category : ${categories}">
+                                    <td>
+                                        <a th:href="@{/categories/edit/{id}(id=${category.id})}"
+                                            class="text-gray-600 text-hover-primary">[[${category.name}]]</a>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a th:href="@{/categories/edit/{id}(id=${category.id})}"
+                                                class="btn btn-secondary btn-sm">[[#{category.list.edit}]]</a>
+                                            <!-- <form th:action="@{/categories/delete/{id}(id=${category.id})}"
+                                                th:data-confirm-message="#{delete.confirm}" method="post"
+                                                class="js-submit-confirm d-inline">
+                                                <button type="submit"
+                                                    class="btn btn-secondary btn-sm">[[#{category.list.delete}]]</button> -->
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

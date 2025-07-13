@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{transaction.edit.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4 align-items-center justify-content-between">
+                <h1 class="fw-medium display-6 mb-0">[[#{transaction.edit.headline}]]</h1>
+                <div>
+                    <a th:href="@{/transactions}" class="btn btn-secondary">[[#{transaction.edit.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('transaction')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='id', disabled=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='categoryId')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='amount', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='transactionDate', required=true, inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='transactionType', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='description', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='transaction', field='userId', required=true)}" />
+                <input type="submit" th:value="#{transaction.edit.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

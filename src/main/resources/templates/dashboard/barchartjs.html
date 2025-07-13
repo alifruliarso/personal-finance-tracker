@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Financial Dashboard</title>
+    <script th:fragment="js_chart" th:inline="javascript" type="text/javascript">
+        Chart.register(ChartDataLabels);
+
+        const data = /*[[${transactionSummary}]]*/[
+            { timeLabel: "2025-07-01", expenseAmount: 10 },
+            { timeLabel: "2025-07-02", expenseAmount: 15 },
+            { timeLabel: "2025-07-03", expenseAmount: 20 },
+            { timeLabel: "2025-07-04", expenseAmount: 25 },
+            { timeLabel: "2025-07-05", expenseAmount: 30 },
+            { timeLabel: "2025-07-06", expenseAmount: 5 },
+            { timeLabel: "2025-07-07", expenseAmount: 12 },
+            { timeLabel: "2025-07-08", expenseAmount: 18 },
+            { timeLabel: "2025-07-09", expenseAmount: 22 },
+            { timeLabel: "2025-07-10", expenseAmount: 28 }
+        ];
+
+        const ctx2 = document.getElementById('chart2');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: data.map(row => row.timeLabel),
+                datasets: [{
+                    label: 'Expense',
+                    data: data.map(row => row.expenseAmount),
+                    borderWidth: 2,
+                    borderColor: '#ff6384',
+                    backgroundColor: '#ff6384',
+                    borderRadius: 10,
+                },
+                {
+                    label: 'Income',
+                    data: data.map(row => row.incomeAmount), // Assuming incomeAmount is available
+                    borderWidth: 2,
+                    borderColor: '#4fc9da',
+                    backgroundColor: '#4fc9da',
+                    borderRadius: 10,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        stacked: true,
+                        beginAtZero: false,
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, ticks) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        stacked: false,
+                        title: {
+                            color: '#b8d935',
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#4fc9da',
+                            font: {
+                                size: 20
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: 'black',
+                        font: {
+                            weight: 'bold'
+                        },
+                        align: 'end',
+                        anchor: 'end',
+                        formatter: function (value, index, context) {
+                            if (value > 0) {
+                                return value;
+                            } else {
+                                return '';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

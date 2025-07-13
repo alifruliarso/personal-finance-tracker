@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Financial Dashboard</title>
+    <script th:fragment="js_chart" th:inline="javascript" type="text/javascript">
+        Chart.register(ChartDataLabels);
+
+        const data = /*[[${transactionSummary}]]*/[
+            { timeLabel: "2025-07-01", expenseAmount: 10 },
+            { timeLabel: "2025-07-02", expenseAmount: 15 },
+            { timeLabel: "2025-07-03", expenseAmount: 20 },
+            { timeLabel: "2025-07-04", expenseAmount: 25 },
+            { timeLabel: "2025-07-05", expenseAmount: 30 },
+            { timeLabel: "2025-07-06", expenseAmount: 5 },
+            { timeLabel: "2025-07-07", expenseAmount: 12 },
+            { timeLabel: "2025-07-08", expenseAmount: 18 },
+            { timeLabel: "2025-07-09", expenseAmount: 22 },
+            { timeLabel: "2025-07-10", expenseAmount: 28 }
+        ];
+
+        const ctx = document.getElementById('chart1');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(row => row.timeLabel),
+                datasets: [{
+                    label: 'Expense by Date',
+                    data: data.map(row => row.expenseAmount),
+                    borderWidth: 2,
+                    borderColor: '#ff6384',
+                    backgroundColor: '#ff6384',
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 10,
+                },
+                {
+                    label: 'Income by Date',
+                    data: data.map(row => row.incomeAmount || 0), // Assuming incomeAmount is available
+                    borderWidth: 2,
+                    borderColor: '#4fc9da',
+                    backgroundColor: '#4fc9da',
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 10,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, ticks) {
+                                return '$' + value;
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            color: 'red',
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#4fc9da',
+                            font: {
+                                size: 20
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: 'white',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

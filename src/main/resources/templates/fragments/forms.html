@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="inputRow(object, field)"
+        th:with="type=${type} ?: 'text', required=${required}, disabled=${disabled}, autocomplete=${autocomplete} ?: '', 
+                inputClassappend=${#fields.hasErrors(field) || (type == 'textarea' && #fields.hasErrors(field + '*')) ? 'is-invalid ' : ''} + ${disabled == true ? 'bg-light ' : ''} + ${inputClass ?: ''}"
+        th:object="${__${object}__}" class="row mb-3">
+        <div th:if="${type == 'checkbox'}" class="offset-md-2 col-md-10">
+            <div class="form-check">
+                <input th:type="${type}" th:field="*{__${field}__}" th:disabled="${disabled}"
+                    th:classappend="${inputClassappend}" class="form-check-input" />
+                <label th:for="${#ids.prev(field)}" class="form-check-label ms-2">
+                    <span>[[#{__${object}__.__${field}__.label} + ${required == true ? '*' : ''}]]</span>
+                </label>
+            </div>
+            <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
+        </div>
+        <label th:if="${type != 'checkbox'}" th:for="${type == 'radio' ? '' : field}" class="col-md-2 col-form-label">
+            <span>[[#{__${object}__.__${field}__.label} + ${required == true ? '*' : ''}]]</span>
+        </label>
+        <div th:if="${type != 'checkbox'}" class="col-md-10">
+            <input
+                th:if="${type == 'text' || type == 'password' || type == 'email' || type == 'tel' || type == 'number'}"
+                th:type="${type}" th:field="*{__${field}__}" th:disabled="${disabled}"
+                th:classappend="${inputClassappend}" th:autocomplete="${autocomplete}" class="form-control" />
+            <textarea th:if="${type == 'textarea'}" th:field="*{__${field}__}" th:disabled="${disabled}"
+                th:classappend="${inputClassappend}" class="form-control" />
+            <select th:if="${type == 'select' || type == 'multiselect'}" th:field="*{__${field}__}"
+                th:disabled="${disabled}" th:multiple="${type == 'multiselect'}" th:classappend="${inputClassappend}"
+                class="form-select">
+                <!-- <option th:if="${type == 'select'}" value="">[[#{select.empty.label}]]</option> -->
+                <option th:if="${!(__${field}__Values instanceof T(java.util.Map))}"
+                    th:each="optionValue : ${__${field}__Values}" th:value="${optionValue}">[[${optionValue}]]</option>
+                <option th:if="${__${field}__Values instanceof T(java.util.Map)}"
+                    th:each="optionValue : ${__${field}__Values}" th:value="${optionValue.key}">[[${optionValue.value}]]
+                </option>
+            </select>
+            <div th:if="${type == 'radio' && required != true}" class="form-check form-check-inline pt-2">
+                <input value="" th:checked="*{__${field}__} == null" th:name="${field}" th:disabled="${disabled}"
+                    th:classappend="${inputClassappend}" type="radio" class="form-check-input" />
+                <label class="form-check-label ms-2">[[#{select.empty.label}]]</label>
+            </div>
+            <div th:if="${type == 'radio'}" th:each="radioValue : ${__${field}__Values}"
+                class="form-check form-check-inline pt-2">
+                <input th:field="*{__${field}__}" th:value="${radioValue}" th:disabled="${disabled}"
+                    th:classappend="${inputClassappend}" type="radio" class="form-check-input" />
+                <label th:for="${#ids.prev(field)}" class="form-check-label ms-2">[[${radioValue}]]</label>
+            </div>
+            <div th:replace="~{:: fieldErrors(${object}, ${field})}" />
+        </div>
+    </div>
+
+    <div th:fragment="fieldErrors(object, field)" th:object="${__${object}__}" th:remove="tag">
+        <div th:if="${#fields.hasErrors(field) || #fields.hasErrors(field + '*')}" class="mt-1">
+            <p th:each="fieldError : ${#fields.detailedErrors(field + '*')}" class="text-danger small">
+                [[${(fieldError.fieldName != field ? fieldError.fieldName + ': ' : '') + fieldError.message}]]</p>
+        </div>
+    </div>
+
+    <div th:fragment="globalErrors(object)" th:object="${__${object}__}" th:remove="tag">
+        <div th:if="${#fields.hasGlobalErrors()}" class="mt-1">
+            <p th:each="globalError : ${#fields.globalErrors()}" class="text-danger small">[[${globalError}]]</p>
+        </div>
+    </div>
+</body>
+
+</html>

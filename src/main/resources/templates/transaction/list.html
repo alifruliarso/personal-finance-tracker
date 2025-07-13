@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>[[#{transaction.list.headline}]]</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex flex-wrap mb-4 align-items-center justify-content-between">
+            <div class="card w-100">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h1 class="fw-medium display-6 mb-0">[[#{transaction.list.headline}]]</h1>
+                    <a th:href="@{/transactions/add}" class="btn btn-primary">[[#{transaction.list.createNew}]]</a>
+                    <div th:if="${transactions.empty}">
+                        <form th:action="@{/transactions/generate}" data-confirm-message="Generate ?" method="post"
+                            class="js-submit-confirm d-inline">
+                            <button type="submit" class="btn btn-secondary btn-sm"
+                                style="color: #b8d935; background-color: #f4fbdb;">Generate Demo
+                                data</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div th:if="${transactions.empty}" class="text-muted">[[#{transaction.list.empty}]]</div>
+                    <div th:if="${!transactions.empty}" class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-start">[[#{transaction.id.label}]]</th>
+                                    <th scope="col" class="text-start">Category</th>
+                                    <th scope="col" class="text-start">[[#{transaction.amount.label}]]</th>
+                                    <th scope="col" class="text-start">[[#{transaction.transactionDate.label}]]</th>
+                                    <th scope="col" class="text-start">[[#{transaction.transactionType.label}]]</th>
+                                    <th scope="col" class="text-start">User</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="transaction : ${transactions}">
+                                    <td>[[${transaction.id}]]</td>
+                                    <td>[[${transaction.category.name}]]</td>
+                                    <td>[[${transaction.amount}]]</td>
+                                    <td>[[${transaction.transactionDate}]]</td>
+                                    <td>[[${transaction.transactionType}]]</td>
+                                    <td>[[${transaction.user.fullName}]]</td>
+                                    <td>
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <a th:href="@{/transactions/edit/{id}(id=${transaction.id})}"
+                                                class="btn btn-secondary btn-sm">[[#{transaction.list.edit}]]</a>
+                                            <form th:action="@{/transactions/delete/{id}(id=${transaction.id})}"
+                                                th:data-confirm-message="#{delete.confirm}" method="post"
+                                                class="js-submit-confirm d-inline">
+                                                <button type="submit"
+                                                    class="btn btn-secondary btn-sm">[[#{transaction.list.delete}]]</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

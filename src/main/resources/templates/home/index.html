@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>[[#{home.index.headline}]]</title>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="card w-100">
+            <div class="card-body p-0">
+                <div class="card-px text-center py-20 my-10">
+                    <h2 class="fw-medium display-4 mb-4">[[#{home.index.headline}]]</h2>
+                    <p class="mb-5">[[#{home.index.text}]]</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

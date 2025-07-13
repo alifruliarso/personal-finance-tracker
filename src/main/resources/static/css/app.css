@@ -1,0 +1,40 @@
+.btn-primary {
+  background-color: #4fc9da;
+  border-color: #4fc9da;
+}
+.btn-primary:hover {
+  background-color: #3ab8c7;
+  border-color: #3ab8c7;
+}
+
+.btn-secondary {
+  background-color: #f6f1e9;
+  border-color: #fdfcfa;
+  color: #000000;
+}
+
+.btn-secondary:hover {
+  background-color: #ddf8fc;
+  border-color: #ddf8fc;
+  color: #4fc9da;
+}
+
+.card {
+  background-color: #fdfcfa;
+  border: 1px dashed #e8e5dd;
+}
+
+.text-gray-600 {
+    color: var(--bs-text-gray-600) !important;
+}
+
+.text-hover-primary:hover{
+    transition: color .2s ease;
+    color: #4fc9da !important;
+}
+
+.separator {
+    display: block;
+    height: 0;
+    border-bottom: 1px solid var(--bs-border-color);
+}

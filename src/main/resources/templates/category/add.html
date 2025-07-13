@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{category.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4 align-items-center justify-content-between">
+                <h1 class="fw-medium display-6 mb-0">[[#{category.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/categories}" class="btn btn-secondary">[[#{category.add.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('category')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='category', field='id', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='category', field='name', required=true)}" />
+                <input type="submit" th:value="#{category.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>
