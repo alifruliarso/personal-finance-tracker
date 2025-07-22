@@ -4,6 +4,8 @@
 
 <head>
     <title>Financial Dashboard</title>
+    <script th:replace="dashboard/barchartjs :: chartjs"></script>
+    <script th:replace="dashboard/barchartjs :: plugin-datalabels"></script>
 </head>
 
 <body>
@@ -15,7 +17,7 @@
                 </div>
                 <div class="card-body">
                     <div class="chart-container" style="position: relative; height:50vh; width:50vw">
-                        <canvas id="chart2"></canvas>
+                        <canvas id="barchart"></canvas>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,11 @@
 
 <head>
     <title>Financial Dashboard</title>
+
+    <script th:fragment="chartjs" th:inline="javascript" type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:fragment="plugin-datalabels" th:inline="javascript" type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script th:fragment="js_chart" th:inline="javascript" type="text/javascript">
         Chart.register(ChartDataLabels);
 
@@ -20,7 +25,7 @@
             { timeLabel: "2025-07-10", expenseAmount: 28 }
         ];
 
-        const ctx2 = document.getElementById('chart2');
+        const ctx2 = document.getElementById('barchart');
         new Chart(ctx2, {
             type: 'bar',
             data: {
