@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 
+import com.galapea.techblog.pftgriddbcloud.model.TransactionByCategory;
 import com.galapea.techblog.pftgriddbcloud.model.TransactionSummary;
 import com.galapea.techblog.pftgriddbcloud.model.TransactionType;
 import com.galapea.techblog.pftgriddbcloud.util.DateTimeUtil;
@@ -194,7 +195,6 @@ public class TransactionContainer {
 
 	public List<TransactionSummary> getTransactionSummaryByDate(
 			String userId, String startDate, String endDate) {
-
 		String stmt2 =
 				"""
 				SELECT transactionDate, \
@@ -256,6 +256,52 @@ public class TransactionContainer {
 				userId,
 				startDate,
 				endDate);
+		return summaries;
+	}
+
+	public List<TransactionByCategory> getTransactionSummaryByCategory(String userId) {
+		String stmt2 =
+				"""
+				SELECT PFTCategory.name, SUM(amount) as total \
+				FROM PFTTransaction LEFT JOIN PFTCategory ON PFTTransaction.categoryId = PFTCategory.id \
+				WHERE transactionType = 'EXPENSE' \
+				GROUP BY categoryId
+				""";
+
+		List<GridDbCloudSQLStmt> statementList = List.of(new GridDbCloudSQLStmt(stmt2));
+		SQLSelectResponse[] response = this.gridDbCloudClient.select(statementList);
+		if (response == null || response.length != statementList.size()) {
+			log.error(
+					"Failed to getTransactionSummaryByCategory. Response is null or size mismatch. Expected: {}, Actual: {}",
+					statementList.size(),
+					response != null ? response.length : 0);
+			return List.of();
+		}
+
+		List<List<Object>> results = response[0].getResults();
+		if (results.isEmpty()) {
+			log.info("No TransactionSummaryByCategory found for userId: {}", userId);
+			return List.of();
+		}
+		List<TransactionByCategory> summaries =
+				results.stream()
+						.map(
+								row -> {
+									try {
+										String categoryId = row.get(0).toString();
+										double totalAmount =
+												Double.parseDouble(row.get(1).toString());
+										return new TransactionByCategory(categoryId, totalAmount);
+									} catch (Exception e) {
+										log.error(
+												"Error parsing TransactionSummaryByCategory row: {}. Error: {}",
+												row.toString(),
+												e.getMessage());
+										return null;
+									}
+								})
+						.filter(s -> s != null)
+						.collect(Collectors.toList());
 		return summaries;
 	}
 }

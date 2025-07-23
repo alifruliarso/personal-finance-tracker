@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.galapea.techblog.pftgriddbcloud.model.TransactionByCategory;
 import com.galapea.techblog.pftgriddbcloud.model.TransactionDTO;
 import com.galapea.techblog.pftgriddbcloud.model.TransactionSummary;
 import com.galapea.techblog.pftgriddbcloud.util.NotFoundException;
@@ -113,5 +114,9 @@ public class TransactionService {
 
 	public List<TransactionSummary> getTransactionSummary(String userIdString) {
 		return transactionContainer.getTransactionSummaryByDate(userIdString, "", "");
+	}
+
+	public List<TransactionByCategory> getTransactionSummaryByCategory(String userId) {
+		return transactionContainer.getTransactionSummaryByCategory(userId);
 	}
 }

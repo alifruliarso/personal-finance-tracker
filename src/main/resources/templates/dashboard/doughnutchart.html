@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title>Financial Dashboard</title>
+
+    <script th:fragment="chartjs" th:inline="javascript" type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:fragment="plugin-datalabels" th:inline="javascript" type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script th:fragment="js_doughnutchart" th:inline="javascript" type="text/javascript">
+        Chart.register(ChartDataLabels);
+
+        const dataExpenseByCategory = /*[[${transactionSummaryByCategory}]]*/[
+            { categoryName: "Food", totalAmount: 10 },
+            { categoryName: "Transport", totalAmount: 15 },
+            { categoryName: "Electricity", totalAmount: 20 }
+        ];
+
+        new Chart(document.getElementById('doughnutchart'), {
+            type: 'doughnut',
+            data: {
+                labels: dataExpenseByCategory.map(row => row.categoryName),
+                datasets: [{
+                    label: 'Expense',
+                    data: dataExpenseByCategory.map(row => row.totalAmount),
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: '>>Expense by Category',
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

@@ -10,18 +10,35 @@
 
 <body>
     <div layout:fragment="content">
-        <div class="d-flex flex-wrap mb-4 align-items-center justify-content-between">
-            <div class="card w-100">
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <h1 class="fw-medium display-6 mb-0">Income and Expenses</h1>
+        <div class="container-fluid text-center">
+            <div class="row align-items-center mb-4">
+                <div class="col-8">
+                    <div class="card w-100">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <h1 class="fw-medium display-6 mb-0">Income and Expenses</h1>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="position: relative; height: 300px; min-height: 315px;">
+                                <canvas id="barchart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="chart-container" style="position: relative; height:50vh; width:50vw">
-                        <canvas id="barchart"></canvas>
+                <div class="col-4">
+                    <div class="card w-100">
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <h1 class="fw-medium display-6 mb-0">Expenses by Category</h1>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="position: relative; height: 300px; min-height: 315px;">
+                                <canvas id="doughnutchart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row g-3 mt-4">
+
+            <div class="row align-items-center mb-4">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
@@ -50,8 +67,10 @@
                             <h2 class="fw-medium display-6 mb-0 text-nowrap">Difference</h2>
                         </div>
                         <div class="card-body fw-bold">
-                            <span class="fs-4 fw-semibold">$</span><span th:text="${totalDifference}"
-                                class="fs-2 fw-bold"></span>
+                            <span class="fs-4 fw-semibold">$</span>
+                            <span th:text="${totalDifference}" class="fs-2 fw-bold"
+                                th:classappend="${totalDifference &lt; 0 ? 'text-danger' : 'text-success'}">
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -59,6 +78,7 @@
         </div>
         <!-- https://stackoverflow.com/questions/27176640/how-to-put-code-thymeleaf-in-an-external-javascript-file -->
         <script th:replace="dashboard/barchartjs :: js_chart"></script>
+        <script th:replace="dashboard/doughnutchart :: js_doughnutchart"></script>
     </div>
 </body>
 

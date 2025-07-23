@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.galapea.techblog.pftgriddbcloud.model.TransactionByCategory;
 import com.galapea.techblog.pftgriddbcloud.model.TransactionSummary;
 import com.galapea.techblog.pftgriddbcloud.model.UserDTO;
 import com.galapea.techblog.pftgriddbcloud.service.TableSeeder;
@@ -30,12 +31,9 @@ public class DashboardController {
 		UserDTO currentUser = userService.getByEmail(TableSeeder.DUMMY_USER1_EMAIL);
 		List<TransactionSummary> transactionSum =
 				transactionService.getTransactionSummary(currentUser.getId());
-		// List.of(
-		// 		new TransactionSummary("2025-06-29", 3, 0),
-		// 		new TransactionSummary("2025-06-30", 10, 150),
-		// 		new TransactionSummary("2025-07-01", 99, 0),
-		// 		new TransactionSummary("2025-07-02", 7, 0),
-		// 		new TransactionSummary("2025-07-03", 72, 50));
+		List<TransactionByCategory> transactionSummaryByCategory =
+				transactionService.getTransactionSummaryByCategory(currentUser.getId());
+		model.addAttribute("transactionSummaryByCategory", transactionSummaryByCategory);
 		model.addAttribute("transactionSummary", transactionSum);
 		double totalIncome =
 				transactionSum.stream().mapToDouble(TransactionSummary::incomeAmount).sum();
