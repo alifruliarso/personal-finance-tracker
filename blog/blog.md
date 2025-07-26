@@ -36,10 +36,22 @@ After completing the prerequisites, we'll start create a new Spring Boot applica
 
 ### Configuring the GridDB Cloud Connection
 
-To connect to the GridDB Web API via HTTP Requests, we have to get the base URL and include basic authentication in the HTTP Request's headers. You can set up and get these by following the [GridDB Cloud Quick Start Guide
-](https://griddb.net/en/blog/griddb-cloud-quick-start-guide/)
+To connect to the GridDB Web API via HTTP Requests, we have to get the base URL and include basic authentication in the HTTP Request's headers. You can set up and get these by following [the GridDB Cloud quick start guide.](https://griddb.net/en/blog/griddb-cloud-quick-start-guide/)
 
 Add those values into `src/main/resources/application.properties`.
+
+1. Using plain text
+
+
+```
+# GridDB Configuration
+griddbcloud.base-url=https://cloud5197.griddb.com:443/griddb/v2/gs_cluster
+griddbcloud.auth-token=TTAxxxxxxx
+```
+
+> ***auth-token***: Base64 encoded string of the username and password, separated by a colon.
+
+2. Or using environment variables from OS or command-line arguments or IDE configuration.
 
 ```
 # GridDB Configuration
